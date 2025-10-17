@@ -5,13 +5,15 @@ from .models import CustomUser
 class SignupForm(UserCreationForm):
     full_name = forms.CharField(
         max_length=100,
-        widget=forms.TextINput(attrs={
+        required=True,
+        widget=forms.TextInput(attrs={
             'placeholder': "Full Name",
             'class': 'form-input'
         })
     )
     
     email = forms.EmailField(
+        required=True,
         widget=forms.EmailInput(attrs={
             'placeholder' : 'Email',
             'class': 'form-input',
@@ -20,6 +22,7 @@ class SignupForm(UserCreationForm):
     
     phone_number = forms.CharField(
         max_length=20,
+        required=True,
         widget=forms.TextInput(attrs={
             'placeholder':'Phone Number',
             'class':'form-input',
