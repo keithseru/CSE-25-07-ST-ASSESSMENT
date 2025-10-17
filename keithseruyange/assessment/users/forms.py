@@ -43,6 +43,17 @@ class SignupForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['full_name', 'email', 'phone_number', 'password1', 'password2']
+        
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.first_name = self.cleaned_data['full_name'].split()[0]
+        if len(self.cleaned_data['full_name'].split()) > 1:
+            user.last_name = ' '.join(self.cleaned_data['full_name'].split()[1:])
+        user.phone_number = self.cleaned_data['phone_number']
+        user.username = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
