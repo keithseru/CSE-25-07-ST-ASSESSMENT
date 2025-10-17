@@ -10,15 +10,15 @@ class SignupForm(UserCreationForm):
         required=True,
         widget=forms.TextInput(attrs={
             'placeholder': "Full Name",
-            'class': 'form-input'
+            'class': 'form-control'
         })
     )
     
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(attrs={
-            'placeholder' : 'Email',
-            'class': 'form-input',
+            'placeholder': 'Email',
+            'class': 'form-control',
         })
     )
     
@@ -30,23 +30,24 @@ class SignupForm(UserCreationForm):
     phone_number = forms.CharField(
         max_length=20,
         required=True,
+        validators=[phone_regex],
         widget=forms.TextInput(attrs={
-            'placeholder':'Phone Number',
-            'class':'form-input',
+            'placeholder': 'Phone Number',
+            'class': 'form-control',
         })
     )
     
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Password',
-            'class':'form-input'
+            'class': 'form-control'
         })
     )
     
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Confirm Password',
-            'class':'form-input'
+            'class': 'form-control'
         })
     )
     
@@ -57,7 +58,7 @@ class SignupForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if CustomUser.objects.filter(email=email).exists():
-            raise forms.ValidationError('This email is already registered!')
+            raise forms.ValidationError('This email is already registered.')
         return email
     
     def clean_phone_number(self):
@@ -73,7 +74,6 @@ class SignupForm(UserCreationForm):
             raise forms.ValidationError('This phone number is already registered.')
         return phone
     
-    
     def save(self, commit=True):
         user = super().save(commit=False)
         full_name_parts = self.cleaned_data['full_name'].split()
@@ -87,18 +87,19 @@ class SignupForm(UserCreationForm):
             user.save()
         return user
 
+
 class LoginForm(forms.Form):
     username = forms.CharField(
-        widget=forms.Textarea(attrs={
+        widget=forms.TextInput(attrs={  # CHANGED FROM Textarea
             'placeholder': 'Email or Phone Number',
-            'class': 'form-input'
+            'class': 'form-control'
         })
     )
     
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
-            'placeholder':'Password',
-            'class':'form-input'
+            'placeholder': 'Password',
+            'class': 'form-control'
         })
     )
     
@@ -107,7 +108,6 @@ class LoginForm(forms.Form):
         password = self.cleaned_data.get('password')
 
         if username and password:
-            # Try to find user by email or phone number
             user = None
             
             # Check if username is email
