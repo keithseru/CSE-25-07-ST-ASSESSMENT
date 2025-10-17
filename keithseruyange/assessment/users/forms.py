@@ -44,4 +44,17 @@ class SignupForm(UserCreationForm):
         model = CustomUser
         fields = ['full_name', 'email', 'phone_number', 'password1', 'password2']
 
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Email or Phone Number',
+            'class': 'form-input'
+        })
+    )
     
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder':'Password',
+            'class':'form-input'
+        })
+    )
